@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Report Test</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no" />
+    <link rel="shortcut icon" href="#" />
+    <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/style.min.css?v=3.3" type="text/css">
+    <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/three.js?v=v3.3"></script>
+    <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/viewer3D.js?v=v3.3"></script>
+	<script src="https://unpkg.com/jspdf/dist/jspdf.min.js"></script>
+    <style>
+        html {color: white; font-family: Avenir Next, Arial;}
+    </style>
+</head>
+
+<body onload="initializeViewer();" style="margin:0">
+    <div id="forgeViewer" ></div>
+</body>
+
+<script>
+var viewer;
+var svfURL = "https://lmv.rocks/data/house2/0.svf";
+
+function initializeViewer() {
+    window.devicePixelRatio = 1;
+    viewer = new Autodesk.Viewing.Private.GuiViewer3D(document.getElementById('forgeViewer'), {});
+    var options = {
+        env: "Local",
+        useConsolidation: true,
+        useADP: false,
+    }
+    Autodesk.Viewing.Initializer(options, function() {
+        viewer.start(svfURL, options, onSuccess);
+    });
+
+    function onSuccess() {
+        viewer.setBackgroundColor(0, 0, 0, 155, 155, 155);
+        viewer.impl.toggleGroundShadow(true);
+        switchView(viewStates['view1']);
+        viewer.addEventListener(Autodesk.Viewing.TEXTURES_LOADED_EVENT, () => {
+            viewer.getScreenShotBuffer(viewer.canvas.width, viewer.canvas.height, img => createPDF(img));
+        });
+    }
+}
+
+function createPDF(imgData) {
+    var doc = new jsPDF()
+    doc.setFontSize(40)
+    doc.text(35, 25, 'ForgeViewer PDF report');
+    var y_offset = 15;
+    var ht = y_offset + (180 - 15) / viewer.canvas.width * viewer.canvas.height;
+    doc.addImage(imgData, 'JPEG', y_offset, 40, 180, ht);
+    doc.save('report-floor1.pdf')
+}
+
+function switchView(json) {
+    viewer.restoreState(json);
+}
+    // get view state from console
+    // v=viewer.getState();delete(v.seedURN);delete(v.objectSet);delete(v.renderOptions);delete(v.cutplanes);JSON.stringify(v)
+
+var viewStates = {
+    "view1": {"viewport":{"name":"","eye":[-6.678981291686787,64.11639187942134,5.261078695978513],"target":[-6.677053485118784,-3.2332720362821874,7.210447371550131],"up":[-0.000988524459811789,-0.028931897803295203,-0.9995808962304613],"worldUpVector":[0,1,0],"pivotPoint":[-4.795981967783462,-4.581773281097412,6.491022660917711],"distanceToOrbit":68.70504555168286,"aspectRatio":1.8875502008032128,"projection":"perspective","isOrthographic":false,"fieldOfView":45.40123948814179},"cutplanes":[[0.9999999999999998,0,0,-23.218776702880856],[0,0.9999999999999998,0,-2.3382072448730464],[0,0,1,-31.564645767211914],[-0.9999999999999998,0,0,-35.81220626831054],[0,-0.9999999999999998,0,-5.594705581665038],[0,0,-1,-21.571880340576172]]},
+}
+
+</script>
+</html>
+
