@@ -2,14 +2,14 @@
 
 Use Forge Viewer to create a PDF report (client side only)
 
-![](pdfreport.jpg)
+![](pdfReport.jpg)
 
 ## Introduction
 
 Here is a quick way to generate a PDF report of the LMV canvas through the browser.
 It uses the [jsPDF](https://parall.ax/products/jspdf) library.
 
-#### [DEMO](https://wallabyway.github.io/JELDWIN-configurator/)
+#### [DEMO](https://wallabyway.github.io/forge-pdf-report/)
 
 #### [Results.PDF](report-floor1.pdf)
 
@@ -37,9 +37,9 @@ doc.addImage(imgData, 'JPEG', 0, 40, 180, 120);
 doc.save('Floor1_PDFreport.pdf')
 ```
 
-You can find a complete example GitHub here: [https://github.com/wallabyway/deviceOrientationExt](https://github.com/wallabyway/deviceOrientationExt)
+You can find a complete example GitHub here: [https://github.com/wallabyway/forge-pdf-report](https://github.com/wallabyway/forge-pdf-report)
 
-Feel free to add any issues you find to my Github [issues repo](https://github.com/wallabyway/deviceOrientationExt/issues).
+Feel free to add any issues you find to my Github [issues repo](https://github.com/wallabyway/forge-pdf-report/issues).
 
 Follow me on [Twitter @micbeale](http://twitter.com/micbeale)
 
