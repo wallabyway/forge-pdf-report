@@ -20,7 +20,7 @@
 
 <script>
 var viewer;
-var svfURL = "room-svf/room.svf";
+var svfURL = "http://lmv.rocks/data/house2/0.svf";
 
 function initializeViewer() {
     window.devicePixelRatio = 1;
@@ -34,20 +34,13 @@ function initializeViewer() {
         viewer.start(svfURL, options, onSuccess);
     });
 
-    function setView(viewer){
-        viewer.getScreenShotBuffer(viewer.canvas.width, viewer.canvas.height, img => createPDF(img));
-    }
-
     function onSuccess() {
-        viewer.setBackgroundColor(255, 255, 255, 255, 255, 255);
-        viewer.impl.toggleGroundShadow(false);
+        viewer.setBackgroundColor(0, 0, 0, 155, 155, 155);
+        viewer.impl.toggleGroundShadow(true);
+        switchView(viewStates['view1']);
         viewer.addEventListener(Autodesk.Viewing.TEXTURES_LOADED_EVENT, () => {
-            switchView(viewStates['view1']);
-            viewer.impl.setPostProcessParameter("style", "graphite")
-            viewer.impl.setPostProcessParameter("brightness",1.0)
-            setTimeout(()=>setView(viewer),2000);
-        });        
-        
+            viewer.getScreenShotBuffer(viewer.canvas.width, viewer.canvas.height, img => createPDF(img));
+        });
     }
 }
 
@@ -68,7 +61,7 @@ function switchView(json) {
     // v=viewer.getState();delete(v.seedURN);delete(v.objectSet);delete(v.renderOptions);delete(v.cutplanes);JSON.stringify(v)
 
 var viewStates = {
-    "view1": {"objectSet":[{"id":[],"isolated":[],"hidden":[3901],"explodeScale":0,"idType":"lmv"}],"viewport":{"name":"","eye":[-32.00850432260684,-65.46206670538571,59.95169696154845],"target":[-2.830851417139346,-2.1640540502118455,-3.4625927364333293],"up":[0.2817211231975627,0.6111659247974525,0.7396684535052029],"worldUpVector":[0,0,1],"pivotPoint":[5.960464477539062e-7,-0.0000012516975402832031,0],"distanceToOrbit":94.23028161406518,"aspectRatio":1.7299741602067182,"projection":"orthographic","isOrthographic":true,"orthographicHeight":94.23028161406525},"renderOptions":{"environment":"Sharp Highlights","ambientOcclusion":{"enabled":false,"radius":6.73534120421763,"intensity":0.4},"toneMap":{"method":1,"exposure":-9,"lightMultiplier":-1e-20},"appearance":{"ghostHidden":false,"ambientShadow":false,"antiAliasing":true,"progressiveDisplay":false,"swapBlackAndWhite":false,"displayLines":true,"displayPoints":false}},"cutplanes":[]},
+    "view1": {"viewport":{"name":"","eye":[-6.678981291686787,64.11639187942134,5.261078695978513],"target":[-6.677053485118784,-3.2332720362821874,7.210447371550131],"up":[-0.000988524459811789,-0.028931897803295203,-0.9995808962304613],"worldUpVector":[0,1,0],"pivotPoint":[-4.795981967783462,-4.581773281097412,6.491022660917711],"distanceToOrbit":68.70504555168286,"aspectRatio":1.8875502008032128,"projection":"perspective","isOrthographic":false,"fieldOfView":45.40123948814179},"cutplanes":[[0.9999999999999998,0,0,-23.218776702880856],[0,0.9999999999999998,0,-2.3382072448730464],[0,0,1,-31.564645767211914],[-0.9999999999999998,0,0,-35.81220626831054],[0,-0.9999999999999998,0,-5.594705581665038],[0,0,-1,-21.571880340576172]]},
 }
 
 </script>
